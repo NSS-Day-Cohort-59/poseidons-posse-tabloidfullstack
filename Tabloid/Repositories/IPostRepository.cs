@@ -9,7 +9,9 @@ namespace Tabloid.Repositories
         List<Post> GetAllPostsByUser(int userProfileId);
         List<Post> PostsByCategory(int catId);
         List<Post> PostsByTag(int tagId);
-        Post GetPublishedPostById(int id);
+
+
+        Post GetPostById(int id);
         Post GetUserPostById(int id, int userProfileId);
         void Add(Post post);
         void Delete(Post post);
