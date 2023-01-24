@@ -108,27 +108,26 @@ namespace Tabloid.Repositories
                 {
                     cmd.CommandText = @"
                         SELECT up.Id, up.FirstName, up.LastName, up.DisplayName, 
-                        up.Email, up.CreateDateTime, up.ImageLocation, up.UserTypeId,
-                        ut.Name AS UserTypeName
+                        up.Email, up.UserTypeId,
+
+                         ut.Id, ut.Name AS UserTypeName
+
                         FROM UserProfile up
                         LEFT JOIN UserType ut on up.UserTypeId = ut.Id
                         ORDER BY up.DisplayName
                     ";
 
-                    List<UserProfile> userProfiles = new List<UserProfile>();
+                    List<UserProfile> profiles = new List<UserProfile>();
 
                     var reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
-                        UserProfile userProfile = new UserProfile()
+                        UserProfile profile = new UserProfile()
                         {
                             Id = DbUtils.GetInt(reader, "Id"),
                             FirstName = DbUtils.GetString(reader, "FirstName"),
                             LastName = DbUtils.GetString(reader, "LastName"),
                             DisplayName = DbUtils.GetString(reader, "DisplayName"),
-                            Email = DbUtils.GetString(reader, "Email"),
-                            CreateDateTime = DbUtils.GetDateTime(reader, "CreateDateTime"),
-                            ImageLocation = DbUtils.GetString(reader, "ImageLocation"),
                             UserTypeId = DbUtils.GetInt(reader, "UserTypeId"),
                             UserType = new UserType()
                             {
@@ -136,11 +135,11 @@ namespace Tabloid.Repositories
                                 Name = DbUtils.GetString(reader, "UserTypeName"),
                             }
                         };
-                        userProfiles.Add(userProfile);
+                        profiles.Add(profile);
                     }
                     reader.Close();
 
-                    return userProfiles;
+                    return profiles;
                 }
             }
         }
