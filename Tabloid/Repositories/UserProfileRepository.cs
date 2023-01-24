@@ -106,44 +106,45 @@ namespace Tabloid.Repositories
                 conn.Open();
                 using (var cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @"SELECT up.Id AS UserId, up.FirstName, up.LastName, up.DisplayName, up.UserTypeId,
-                                       ut.Id AS UserTypeId, ut.Name AS UserName
-                                       FROM UserProfile up
-`                                      JOIN UserType ut ON ut.Id = up.UserTypeId
-                                       ORDER BY up.DisplayName";
+                    cmd.CommandText = @"
+                        SELECT up.Id, up.FirstName, up.LastName, up.DisplayName, 
+                        up.Email, up.CreateDateTime, up.ImageLocation, up.UserTypeId,
+                        ut.Name AS UserTypeName
+                        FROM UserProfile up
+                        LEFT JOIN UserType ut on up.UserTypeId = ut.Id
+                        ORDER BY up.DisplayName
+                    ";
 
-                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    List<UserProfile> userProfiles = new List<UserProfile>();
+
+                    var reader = cmd.ExecuteReader();
+                    while (reader.Read())
                     {
-                        var profiles = new List<UserProfile>();
-                        while (reader.Read())
+                        UserProfile userProfile = new UserProfile()
                         {
-                            var userId = DbUtils.GetInt(reader, "UserId");
-
-                            var profile = profiles.FirstOrDefault(p => p.Id == userId);
-                            if (profile == null) 
+                            Id = DbUtils.GetInt(reader, "Id"),
+                            FirstName = DbUtils.GetString(reader, "FirstName"),
+                            LastName = DbUtils.GetString(reader, "LastName"),
+                            DisplayName = DbUtils.GetString(reader, "DisplayName"),
+                            Email = DbUtils.GetString(reader, "Email"),
+                            CreateDateTime = DbUtils.GetDateTime(reader, "CreateDateTime"),
+                            ImageLocation = DbUtils.GetString(reader, "ImageLocation"),
+                            UserTypeId = DbUtils.GetInt(reader, "UserTypeId"),
+                            UserType = new UserType()
                             {
-                                profile = new UserProfile()
-                                {
-                                    
-                                    FirstName = DbUtils.GetString(reader, "FirstName"),
-                                    LastName = DbUtils.GetString(reader, "LastName"),
-                                    DisplayName = DbUtils.GetString(reader, "DisplayName"),
-                                    UserType = new UserType()
-                                    {
-                                        Id = DbUtils.GetInt(reader, "UserTypeId"),
-                                        Name = DbUtils.GetString(reader, "UserName"),
-                                    },
-                                };
-
-                                profiles.Add(profile);
-                               
+                                Id = DbUtils.GetInt(reader, "UserTypeId"),
+                                Name = DbUtils.GetString(reader, "UserTypeName"),
                             }
-                        }
-                
-                        return profiles;
+                        };
+                        userProfiles.Add(userProfile);
                     }
+                    reader.Close();
+
+                    return userProfiles;
                 }
             }
         }
     }
 }
+
+
