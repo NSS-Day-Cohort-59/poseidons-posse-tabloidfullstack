@@ -32,8 +32,7 @@ namespace Tabloid.Models
         [DisplayName("Category")]
         public int CategoryId { get; set; }
 
-        //Need to create category class
-        //public Category Category { get; set; }
+        public Category Category { get; set; }
 
         [DisplayName("Author")]
         public int UserProfileId { get; set; }
