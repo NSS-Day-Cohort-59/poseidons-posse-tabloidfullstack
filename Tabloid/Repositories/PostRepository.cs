@@ -129,7 +129,7 @@ namespace Tabloid.Repositories
             }
         }
 
-        public Post GetPublishedPostById(int id)
+        public Post GetPostById(int id)
         {
             using (var conn = Connection)
             {
