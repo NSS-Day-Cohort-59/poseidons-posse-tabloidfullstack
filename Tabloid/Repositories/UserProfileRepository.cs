@@ -1,4 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
+using System.Collections.Generic;
+using System.Linq;
 using Tabloid.Models;
 using Tabloid.Utils;
 
@@ -95,5 +98,52 @@ namespace Tabloid.Repositories
             _context.SaveChanges();
         }
         */
+
+        public List<UserProfile> GetAllUsers()
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        SELECT up.Id, up.FirstName, up.LastName, up.DisplayName, 
+                        up.Email, up.UserTypeId,
+
+                         ut.Id, ut.Name AS UserTypeName
+
+                        FROM UserProfile up
+                        LEFT JOIN UserType ut on up.UserTypeId = ut.Id
+                        ORDER BY up.DisplayName
+                    ";
+
+                    List<UserProfile> profiles = new List<UserProfile>();
+
+                    var reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        UserProfile profile = new UserProfile()
+                        {
+                            Id = DbUtils.GetInt(reader, "Id"),
+                            FirstName = DbUtils.GetString(reader, "FirstName"),
+                            LastName = DbUtils.GetString(reader, "LastName"),
+                            DisplayName = DbUtils.GetString(reader, "DisplayName"),
+                            UserTypeId = DbUtils.GetInt(reader, "UserTypeId"),
+                            UserType = new UserType()
+                            {
+                                Id = DbUtils.GetInt(reader, "UserTypeId"),
+                                Name = DbUtils.GetString(reader, "UserTypeName"),
+                            }
+                        };
+                        profiles.Add(profile);
+                    }
+                    reader.Close();
+
+                    return profiles;
+                }
+            }
+        }
     }
 }
+
+
