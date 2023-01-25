@@ -6,7 +6,7 @@ namespace Tabloid.Repositories
     public interface IPostRepository
     {
         List<Post> GetAllPublishedPosts();
-        List<Post> GetAllPostsByUser(int userProfileId);
+        List<Post> GetAllPostsByUser(string userProfileId);
         List<Post> PostsByCategory(int catId);
         List<Post> PostsByTag(int tagId);
 
