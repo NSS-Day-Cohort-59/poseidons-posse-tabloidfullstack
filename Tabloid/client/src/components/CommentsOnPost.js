@@ -42,6 +42,7 @@ const Comments = () => {
 
                     <li>{com.content}</li>
                     <li>By: {com?.userProfile?.fullName}</li>
+                    <li>{com.createDateTime}</li>
                 </ul>
             })}
 
