@@ -20,3 +20,13 @@ export const getAllCategories = () => {
     });
   });
 };
+
+export const postNewCategory = (newCategory) => {
+  return fetch("/api/Category", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(newCategory),
+  }).then((resp) => resp.json());
+};

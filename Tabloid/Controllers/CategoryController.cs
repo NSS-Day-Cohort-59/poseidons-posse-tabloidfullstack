@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Reflection.Metadata.Ecma335;
+using Tabloid.Models;
 using Tabloid.Repositories;
 
 namespace Tabloid.Controllers
@@ -10,17 +13,32 @@ namespace Tabloid.Controllers
     {
         private readonly ICategoryRepository _categoryRepository;
 
-        public CategoryController(ICategoryRepository categoryRepository) 
+        public CategoryController(ICategoryRepository categoryRepository)
         {
             _categoryRepository = categoryRepository;
         }
 
         [HttpGet]
-        public IActionResult Index() 
+        public IActionResult Index()
         {
             var categories = _categoryRepository.GetAll();
             return Ok(categories);
         }
 
+        [HttpPost]
+        public IActionResult Create(Category category)
+        {
+            try
+            {
+                _categoryRepository.AddCategory(category);
+                return RedirectToAction("Index");
+
+            }
+            catch (Exception ex)
+            {
+                return Ok(category);
+            }
+
+        }
     }
 }
