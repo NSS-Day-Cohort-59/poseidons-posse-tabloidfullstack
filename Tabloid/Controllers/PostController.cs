@@ -33,6 +33,18 @@ namespace Tabloid.Controllers
             return Ok(post);
         }
 
+        [HttpGet("comments/{id}")]
+
+        public IActionResult GetComments(int id)
+        {
+            var post = _postRepository.GetCommentsByPostId(id);
+            if (post == null)
+            {
+                return NotFound();
+            }
+            return Ok(post);
+        }
+
 
         [HttpGet("myPosts/{firebaseUserId}")]
         public IActionResult GetByFirebaseUserId(string firebaseUserId)

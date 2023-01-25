@@ -18,5 +18,9 @@ namespace Tabloid.Models
         public string Content { get; set; }
 
         public DateTime CreateDateTime { get; set; }
+
+        public UserProfile UserProfile { get; set; }
+
+        public Post Post { get; set; }
     }
 }
