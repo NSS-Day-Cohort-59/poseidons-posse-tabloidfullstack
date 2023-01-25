@@ -22,5 +22,5 @@ export const getAllUserProfiles = () => {
       };
 
     export const getUserProfileDetails = (id) => {
-        return fetch(`${_baseUrl}/${id}`).then((res) => res.json());
+        return fetch(`${_baseUrl}/GetUserByIdWithUserType/${id}`).then((res) => res.json());
     };
