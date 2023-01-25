@@ -6,6 +6,7 @@ import Hello from "./Hello";
 import CategoryList from "./CategoryList";
 import PostList from "./PostList";
 import PostDetails from "./PostDetails";
+import MyPosts from "./MyPosts";
 
 export default function ApplicationViews({ isLoggedIn }) {
   return (
@@ -19,6 +20,7 @@ export default function ApplicationViews({ isLoggedIn }) {
           <Route path="post">
             <Route index element={<PostList />} />
             <Route path=":id" element={<PostDetails />} />
+            <Route path="myPosts" element={<MyPosts />} />
           </Route>
 
 
