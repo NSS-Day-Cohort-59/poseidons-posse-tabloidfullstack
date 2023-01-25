@@ -145,11 +145,13 @@ namespace Tabloid.Repositories
                               u.FirstName, u.LastName, u.DisplayName, 
                               u.Email, u.CreateDateTime, u.ImageLocation AS AvatarImage,
                               u.UserTypeId, 
-                              ut.[Name] AS UserTypeName
+                              ut.[Name] AS UserTypeName,
+                              com.Content as CContent, com.UserProfileId as CommentUserProfileId, com.Subject, com.Id as CommentId
                          FROM Post p
                               LEFT JOIN Category c ON p.CategoryId = c.id
                               LEFT JOIN UserProfile u ON p.UserProfileId = u.id
                               LEFT JOIN UserType ut ON u.UserTypeId = ut.id
+                              LEFT JOIN Comment com ON com.PostId = p.Id
                         WHERE IsApproved = 1 AND PublishDateTime < SYSDATETIME()
                               AND p.id = @id";
 
@@ -158,9 +160,27 @@ namespace Tabloid.Repositories
 
                     Post post = null;
 
-                    if (reader.Read())
+                    while (reader.Read())
                     {
+                        if (post == null)
+                        {
                         post = NewPostFromReader(reader);
+
+                        }
+
+                        if (DbUtils.IsNotDbNull(reader, "CommentId"))
+                        {
+                            post.Comments.Add(new Comment()
+                            {
+                                Id = DbUtils.GetInt(reader, "CommentId"),
+                                PostId = post.Id,                              
+                                UserProfileId = DbUtils.GetInt(reader, "CommentUserProfileId"),
+                                Content = DbUtils.GetString(reader, "CContent"),
+                                Subject = DbUtils.GetString(reader, "Subject")
+                            });
+                        }
+
+
                     }
 
                     reader.Close();
@@ -273,7 +293,8 @@ namespace Tabloid.Repositories
                         Id = reader.GetInt32(reader.GetOrdinal("UserTypeId")),
                         Name = reader.GetString(reader.GetOrdinal("UserTypeName"))
                     }
-                }
+                },
+                Comments = new List<Comment>()
             };
         }
         public void Delete(Post post)
