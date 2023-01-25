@@ -9,6 +9,7 @@ import PostList from "./PostList";
 import UserProfileList from "./UserProfileList";
 
 import PostDetails from "./PostDetails";
+import MyPosts from "./MyPosts";
 
 
 export default function ApplicationViews({ isLoggedIn }) {
@@ -23,6 +24,7 @@ export default function ApplicationViews({ isLoggedIn }) {
           <Route path="post">
             <Route index element={<PostList />} />
             <Route path=":id" element={<PostDetails />} />
+            <Route path="myPosts" element={<MyPosts />} />
           </Route>
 
 
