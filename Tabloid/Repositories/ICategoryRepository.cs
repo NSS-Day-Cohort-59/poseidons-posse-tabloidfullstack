@@ -7,5 +7,6 @@ namespace Tabloid.Repositories
     {
         List<Category> GetAll();
         void AddCategory(Category category);
+        bool CheckIfExsists(string name);
     }
 }

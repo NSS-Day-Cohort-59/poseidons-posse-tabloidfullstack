@@ -30,8 +30,13 @@ namespace Tabloid.Controllers
         {
             try
             {
-                _categoryRepository.AddCategory(category);
-                return RedirectToAction("Index");
+                if (!_categoryRepository.CheckIfExsists(category.Name))
+                {
+                    _categoryRepository.AddCategory(category);
+                    return RedirectToAction("Index");
+
+                }
+                return Conflict("This category already exists"); 
 
             }
             catch (Exception ex)

@@ -28,5 +28,11 @@ export const postNewCategory = (newCategory) => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(newCategory),
-  }).then((resp) => resp.json());
+  }).then((resp) => {
+    if (resp.ok) {
+      return resp.json();
+    } else {
+      throw new Error("This category already exists");
+    }
+  });
 };

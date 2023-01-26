@@ -20,7 +20,9 @@ export const AddCategoryForm = () => {
       Name: userInput.name,
     };
     if (userInput.name) {
-      postNewCategory(newCategory).then(() => navigate("/category"));
+      postNewCategory(newCategory)
+        .catch((e) => alert(e.message))
+        .then(() => navigate("/category"));
     } else {
       alert("Please enter a new category name");
     }
