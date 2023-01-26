@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using Tabloid.Models;
 using Tabloid.Repositories;
 
 namespace Tabloid.Controllers
@@ -44,6 +46,20 @@ namespace Tabloid.Controllers
             }
             return Ok(post);
         }
+
+        [HttpPost("comment")]
+        public IActionResult Post(Comment comment)
+        {
+
+
+            comment.CreateDateTime = DateTime.Now;
+           
+
+            _postRepository.AddComment(comment);
+
+            return Ok(comment);
+        }
+
 
 
         [HttpGet("myPosts/{firebaseUserId}")]

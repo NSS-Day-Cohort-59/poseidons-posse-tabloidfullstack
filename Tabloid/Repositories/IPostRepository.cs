@@ -12,6 +12,8 @@ namespace Tabloid.Repositories
 
 
         List<Comment> GetCommentsByPostId(int id);
+        void AddComment(Comment comment);
+
 
         Post GetPostById(int id);
         Post GetUserPostById(int id, int userProfileId);

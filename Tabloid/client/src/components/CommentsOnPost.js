@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import React from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { getCommentsOnPost, getPost } from "../modules/postManager";
 
 
@@ -11,6 +11,7 @@ const Comments = () => {
     const [post, setPosts] = useState([]);
     const [comments, setcomments] = useState([]);
     const { id } = useParams();
+    const navigate = useNavigate();
     //Get Methods
     const getcomments = () => {
         getCommentsOnPost(id).then(comments => setcomments(comments));
@@ -34,6 +35,7 @@ const Comments = () => {
 
         <div className="comments">
             <h1>{post.title}</h1>
+            <button className="all" onClick={() => { navigate(`/post/${id}/comments/add`) }}>Add a Comment</button>
             {comments.map((com) => {
 
                 return <ul className="CommentsList-ul" key={com.id}>
@@ -42,7 +44,7 @@ const Comments = () => {
 
                     <li>{com.content}</li>
                     <li>By: {com?.userProfile?.fullName}</li>
-                    <li>{com.createDateTime}</li>
+                    <li>{new Date(com.createDateTime).toLocaleDateString()}</li>
                 </ul>
             })}
 
