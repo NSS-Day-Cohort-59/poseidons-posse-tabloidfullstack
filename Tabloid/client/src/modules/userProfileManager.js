@@ -25,4 +25,20 @@ export const getAllUserProfiles = () => {
         return fetch(`${_baseUrl}/GetUserByIdWithUserType/${id}`).then((res) => res.json());
     };
 
+    export const addUserProfile = (newProfile) => {
+       return fetch(`${_baseUrl}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newProfile),
+      }).then((resp) => {
+        if (resp.ok) {
+          return resp.json();
+        } else {
+          throw new Error("User profile already exists");
+        }
+      });
+    };
+
     
