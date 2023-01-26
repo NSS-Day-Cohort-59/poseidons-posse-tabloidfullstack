@@ -38,7 +38,7 @@ export default function Header({ isLoggedIn }) {
                   </NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink tag={RRNavLink} to="/add">
+                  <NavLink tag={RRNavLink} to="post/add">
                     New Post
                   </NavLink>
                 </NavItem>

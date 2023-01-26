@@ -23,7 +23,7 @@ export const getPost = (id) => {
   return getToken().then((token) => {
     return fetch(`${_postUrl}/${id}`, {
       method: "GET",
-      heafers: {
+      headers: {
         Authorization: `Bearer ${token}`,
       },
     }).then((res) => {
@@ -38,15 +38,15 @@ export const getPost = (id) => {
   });
 };
 
-export const addPost = (post) => {
+export const addPost = (userInput) => {
   return getToken().then((token) => {
-    return fetch(_postUrl, {
+    return fetch(`${_postUrl}`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(post),
+      body: JSON.stringify(userInput),
     }).then((resp) => {
       if (resp.ok) {
         return resp.json();
