@@ -10,6 +10,8 @@ import PostList from "./PostList";
 import UserProfileList from "./UserProfileList";
 
 import PostDetails from "./PostDetails";
+import UserProfileDetails from "./UserProfileDetails";
+import MyPosts from "./MyPosts";
 
 export default function ApplicationViews({ isLoggedIn }) {
   return (
@@ -23,6 +25,7 @@ export default function ApplicationViews({ isLoggedIn }) {
           <Route path="post">
             <Route index element={<PostList />} />
             <Route path=":id" element={<PostDetails />} />
+            <Route path="myPosts" element={<MyPosts />} />
           </Route>
 
           <Route path="login" element={<Login />} />
@@ -30,6 +33,10 @@ export default function ApplicationViews({ isLoggedIn }) {
           <Route path="Category" element={<CategoryList />} />
           <Route path="Category/add" element={<AddCategoryForm />} />
           <Route path="UserProfile" element={<UserProfileList />} />
+          <Route path="userProfile">
+            <Route index element={<UserProfileList />} />
+            <Route path=":id" element={<UserProfileDetails />} />
+          </Route>
           <Route path="*" element={<p>Whoops, nothing here...</p>} />
         </Route>
       </Routes>

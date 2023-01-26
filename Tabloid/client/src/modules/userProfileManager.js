@@ -20,3 +20,9 @@ export const getAllUserProfiles = () => {
           });
         });
       };
+
+    export const getUserProfileDetails = (id) => {
+        return fetch(`${_baseUrl}/GetUserByIdWithUserType/${id}`).then((res) => res.json());
+    };
+
+    
