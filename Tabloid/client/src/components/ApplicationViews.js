@@ -12,6 +12,7 @@ import UserProfileList from "./UserProfileList";
 import PostDetails from "./PostDetails";
 import UserProfileDetails from "./UserProfileDetails";
 import MyPosts from "./MyPosts";
+import Comments from "./CommentsOnPost";
 
 export default function ApplicationViews({ isLoggedIn }) {
   return (
@@ -26,6 +27,8 @@ export default function ApplicationViews({ isLoggedIn }) {
             <Route index element={<PostList />} />
             <Route path=":id" element={<PostDetails />} />
             <Route path="myPosts" element={<MyPosts />} />
+            <Route path=":id/comments" element={<Comments />} />
+
           </Route>
 
           <Route path="login" element={<Login />} />
