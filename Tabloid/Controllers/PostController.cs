@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using System;
 using Tabloid.Models;
 using Tabloid.Repositories;
 
@@ -8,7 +9,7 @@ namespace Tabloid.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PostController : ControllerBase 
+    public class PostController : ControllerBase
     {
         private readonly IPostRepository _postRepository;
         private readonly IUserProfileRepository _userProfileRepository;
@@ -37,13 +38,39 @@ namespace Tabloid.Controllers
             return Ok(post);
         }
 
+        [HttpGet("comments/{id}")]
+
+        public IActionResult GetComments(int id)
+        {
+            var post = _postRepository.GetCommentsByPostId(id);
+            if (post == null)
+            {
+                return NotFound();
+            }
+            return Ok(post);
+        }
+
+        [HttpPost("comment")]
+        public IActionResult Post(Comment comment)
+        {
+
+
+            comment.CreateDateTime = DateTime.Now;
+
+
+            _postRepository.AddComment(comment);
+
+            return Ok(comment);
+        }
+
+
 
         [HttpPost]
         public IActionResult Post(Post post)
-        { 
+        {
             var firebaseUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-             _userProfileRepository.GetByFirebaseUserId(firebaseUserId);
-        
+            _userProfileRepository.GetByFirebaseUserId(firebaseUserId);
+
             _postRepository.Add(post);
 
             return CreatedAtAction("Get", new { id = post.Id }, post);
@@ -66,10 +93,10 @@ namespace Tabloid.Controllers
 
 
 
-       /* private UserProfile GetCurrentUserProfile()
-        {
-            
-        }*/
+        /* private UserProfile GetCurrentUserProfile()
+         {
+
+         }*/
 
 
 
