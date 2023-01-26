@@ -3,18 +3,20 @@ import { useNavigate } from "react-router-dom";
 import { Button, Form, FormGroup, Label, Input } from "reactstrap";
 import { addPost } from "../modules/postManager";
 import { getAllCategories } from "../modules/categoryManager";
+import firebase from "firebase/app";
+import "firebase/auth";
 
 export default function PostForm() {
+  const firebaseId = firebase.auth().currentUser.uid;
   const navigate = useNavigate();
   const [categories, setCategories] = useState([]);
   const [userProfile, setUserProfile] = useState({});
   const [userInput, setUserInput] = useState({
-    id: 0,
     title: "",
     content: "",
     categoryId: 0,
-    isApproved: true,
-    userProfileId: 0,
+    isApproved: 1,
+    userProfileId: firebaseId,
   });
 
   useEffect(() => {
@@ -24,8 +26,8 @@ export default function PostForm() {
   }, []);
 
   useEffect(() => {
-    getUserByProfileId().then((profile) => {
-      setUserProfile(profile);
+    getCurrentUserByFirebaseId.then((profile) => {
+      setCategories(profile);
     });
   }, []);
 

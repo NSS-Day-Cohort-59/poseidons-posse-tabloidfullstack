@@ -40,8 +40,12 @@ namespace Tabloid.Controllers
 
         [HttpPost]
         public IActionResult Post(Post post)
-        {
+        { 
+            var firebaseUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+             _userProfileRepository.GetByFirebaseUserId(firebaseUserId);
+        
             _postRepository.Add(post);
+
             return CreatedAtAction("Get", new { id = post.Id }, post);
         }
 
@@ -64,8 +68,7 @@ namespace Tabloid.Controllers
 
        /* private UserProfile GetCurrentUserProfile()
         {
-            var firebaseUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            return _userProfileRepository.GetByFirebaseUserId(firebaseUserId);
+            
         }*/
 
 

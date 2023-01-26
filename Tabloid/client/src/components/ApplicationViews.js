@@ -7,9 +7,10 @@ import CategoryList from "./Categories/CategoryList";
 import { AddCategoryForm } from "./Categories/AddCategory";
 import PostList from "./PostList";
 import PostForm from "./PostForm";
+import MyPosts from "./MyPosts";
 
 import UserProfileList from "./UserProfileList";
-
+import UserProfileDetails from "./UserProfileDetails";
 import PostDetails from "./PostDetails";
 
 export default function ApplicationViews({ isLoggedIn }) {
