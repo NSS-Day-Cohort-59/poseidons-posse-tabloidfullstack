@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getPost } from "../modules/postManager";
-
+import Comments from "./CommentsOnPost";
 
 
 
 const PostDetails = () => {
     const [post, setPosts] = useState();
     const { id } = useParams();
-
+    const navigate = useNavigate();
     useEffect(() => {
         getPost(id).then(setPosts);
     }, []);
@@ -21,13 +21,16 @@ const PostDetails = () => {
     return (<>
         <div className="postDetails-div">
             <h2>{post.title}</h2>
-            <img className="postDetails-img" src={post.imageLocation} alt="image"></img>
+            <img className="postDetails-img" src="https://robbreport.com/wp-content/uploads/2020/11/eleanor01.jpg?w=1000" alt="image"></img>
             <p>{post.content}</p>
             <ul className="postDetails-ul">
                 <li className="postDetails-li">{post.publishDateTime}</li>
                 <li className="postDetails-li">{post?.userProfile?.displayName}</li>
             </ul>
+            <button className="all" onClick={() => { navigate("comments") }}>Comments</button>
+
         </div>
+
 
 
     </>)

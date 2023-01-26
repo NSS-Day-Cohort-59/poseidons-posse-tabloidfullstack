@@ -11,6 +11,10 @@ namespace Tabloid.Repositories
         List<Post> PostsByTag(int tagId);
 
 
+        List<Comment> GetCommentsByPostId(int id);
+        void AddComment(Comment comment);
+
+
         Post GetPostById(int id);
         Post GetUserPostById(int id, int userProfileId);
         void Add(Post post);

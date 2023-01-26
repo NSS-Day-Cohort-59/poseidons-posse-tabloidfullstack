@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using Tabloid.Models;
 using Tabloid.Repositories;
 
 namespace Tabloid.Controllers
@@ -32,6 +34,32 @@ namespace Tabloid.Controllers
             }
             return Ok(post);
         }
+
+        [HttpGet("comments/{id}")]
+
+        public IActionResult GetComments(int id)
+        {
+            var post = _postRepository.GetCommentsByPostId(id);
+            if (post == null)
+            {
+                return NotFound();
+            }
+            return Ok(post);
+        }
+
+        [HttpPost("comment")]
+        public IActionResult Post(Comment comment)
+        {
+
+
+            comment.CreateDateTime = DateTime.Now;
+           
+
+            _postRepository.AddComment(comment);
+
+            return Ok(comment);
+        }
+
 
 
         [HttpGet("myPosts/{firebaseUserId}")]
