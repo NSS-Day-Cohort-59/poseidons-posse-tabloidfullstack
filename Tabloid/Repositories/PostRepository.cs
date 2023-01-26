@@ -89,7 +89,7 @@ namespace Tabloid.Repositories
             }
         }
 
-        public List<Post> GetAllPostsByUser(int userProfileId)
+        public List<Post> GetAllPostsByUser(string fireId)
         {
             using (var conn = Connection)
             {
@@ -97,12 +97,12 @@ namespace Tabloid.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                       SELECT p.Id, p.Title, p.Content, 
+                      SELECT p.Id, p.Title, p.Content, 
                               p.ImageLocation AS HeaderImage,
-                              p.CreateDateTime, p.PublishDateTime, p.IsApproved,
+                             p.CreateDateTime, p.PublishDateTime, p.IsApproved,
                               p.CategoryId, p.UserProfileId,
                               c.[Name] AS CategoryName,
-                              u.FirstName, u.LastName, u.DisplayName, 
+                              u.FirstName, u.LastName, u.DisplayName, u.FirebaseUserId,
                               u.Email, u.CreateDateTime, u.ImageLocation AS AvatarImage,
                               u.UserTypeId, 
                               ut.[Name] AS UserTypeName
@@ -110,10 +110,10 @@ namespace Tabloid.Repositories
                               LEFT JOIN Category c ON p.CategoryId = c.id
                               LEFT JOIN UserProfile u ON p.UserProfileId = u.id
                               LEFT JOIN UserType ut ON u.UserTypeId = ut.id
-                        WHERE IsApproved = 1 AND PublishDateTime < SYSDATETIME()
-                        AND p.UserProfileId = @userProfileId";
+                        WHERE u.FirebaseUserId = @fireId
+                         ORDER BY p.CreateDateTime";
 
-                    cmd.Parameters.AddWithValue("@userProfileId", userProfileId);
+                    cmd.Parameters.AddWithValue("@fireId", fireId);
                     var reader = cmd.ExecuteReader();
 
                     var posts = new List<Post>();
