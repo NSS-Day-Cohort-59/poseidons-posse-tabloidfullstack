@@ -34,6 +34,18 @@ namespace Tabloid.Controllers
         }
 
 
+        [HttpGet("myPosts/{firebaseUserId}")]
+        public IActionResult GetByFirebaseUserId(string firebaseUserId)
+        {
+            var userPosts = _postRepository.GetAllPostsByUser(firebaseUserId);
+            if (userPosts == null)
+            {
+                return NotFound();
+            }
+            return Ok(userPosts);
+        }
+
+
 
 
 
