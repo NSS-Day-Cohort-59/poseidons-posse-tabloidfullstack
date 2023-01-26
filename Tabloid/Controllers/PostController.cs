@@ -44,6 +44,7 @@ namespace Tabloid.Controllers
             _postRepository.Add(post);
             return CreatedAtAction("Get", new { id = post.Id }, post);
         }
+
         [HttpGet("myPosts/{firebaseUserId}")]
         public IActionResult GetByFirebaseUserId(string firebaseUserId)
         {
