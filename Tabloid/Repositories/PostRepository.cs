@@ -336,6 +336,31 @@ namespace Tabloid.Repositories
             }
         }
 
+        public void AddComment(Comment comment)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        INSERT INTO Comment (
+                            Subject, Content, PostId, CreateDateTime, UserProfileId )
+                        OUTPUT INSERTED.ID
+                        VALUES (
+                            @Subject, @Content, @PostId, @CreateDateTime, @UserProfileId )";
+                    cmd.Parameters.AddWithValue("@Subject", comment.Subject);
+                    cmd.Parameters.AddWithValue("@Content", comment.Content);
+                    cmd.Parameters.AddWithValue("@PostId", comment.PostId);
+                    cmd.Parameters.AddWithValue("@CreateDateTime", comment.CreateDateTime);
+               
+                    cmd.Parameters.AddWithValue("@UserProfileId", comment.UserProfileId);
+
+                    comment.Id = (int)cmd.ExecuteScalar();
+                }
+            }
+        }
+
         private Post NewPostFromReader(SqlDataReader reader)
         {
             return new Post()
