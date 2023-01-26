@@ -20,3 +20,19 @@ export const getAllCategories = () => {
     });
   });
 };
+
+export const postNewCategory = (newCategory) => {
+  return fetch("/api/Category", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(newCategory),
+  }).then((resp) => {
+    if (resp.ok) {
+      return resp.json();
+    } else {
+      throw new Error("This category already exists");
+    }
+  });
+};

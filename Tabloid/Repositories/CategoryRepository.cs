@@ -37,5 +37,44 @@ namespace Tabloid.Repositories
                 }
             }
         }
+        public bool CheckIfExsists (string name)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                    SELECT Name FROM Category WHERE Name= @name";
+
+                    cmd.Parameters.AddWithValue("name", name);
+
+                    var reader = cmd.ExecuteReader();
+                    return reader.HasRows;
+
+                }
+            }
+        }
+        public void AddCategory(Category category) 
+        {
+            using (SqlConnection conn = Connection) 
+            {
+                conn.Open();
+
+                using (SqlCommand cmd = conn.CreateCommand()) 
+                {
+                    cmd.CommandText = @"
+                    INSERT INTO Category (Name)
+                    OUTPUT INSERTED.Id
+                    Values(@name)";
+
+                    cmd.Parameters.AddWithValue("name", category.Name);
+
+                    int id = (int)cmd.ExecuteScalar();
+
+                    category.Id = id;
+                }
+            }
+        }
     }
 }
