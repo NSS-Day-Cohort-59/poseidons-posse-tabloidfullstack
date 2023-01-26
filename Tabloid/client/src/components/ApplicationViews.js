@@ -9,6 +9,7 @@ import PostList from "./PostList";
 import UserProfileList from "./UserProfileList";
 
 import PostDetails from "./PostDetails";
+import UserProfileDetails from "./UserProfileDetails";
 import MyPosts from "./MyPosts";
 
 
@@ -31,10 +32,15 @@ export default function ApplicationViews({ isLoggedIn }) {
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
           <Route path="Category" element={<CategoryList />} />
-          <Route path="UserProfile" element={<UserProfileList />} />
+          <Route path="userProfile">
+            <Route index element={<UserProfileList/>} />
+            <Route path=":id" element={<UserProfileDetails  />} />
+          </Route>
           <Route path="*" element={<p>Whoops, nothing here...</p>} />
         </Route>
       </Routes>
     </main>
   );
 }
+
+
