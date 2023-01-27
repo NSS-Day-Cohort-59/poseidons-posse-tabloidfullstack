@@ -27,7 +27,7 @@ const MyPostDetails = () => {
                 <li className="postDetails-li">{post.publishDateTime}</li>
                 <li className="postDetails-li">{post?.userProfile?.displayName}</li>
             </ul>
-            <button className="all" onClick={() => { navigate("comments") }}>Edit</button>
+            <button className="all" onClick={() => { navigate(`/post/${post.id}/edit`) }}>Edit</button>
 
         </div>
 

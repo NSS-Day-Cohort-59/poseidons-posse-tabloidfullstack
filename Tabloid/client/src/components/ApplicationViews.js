@@ -13,6 +13,7 @@ import MyPosts from "./MyPosts";
 import Comments from "./CommentsOnPost";
 import { AddComment } from "./AddComment";
 import MyPostDetails from "./MyPostDetails";
+import { EditMyPost } from "./FormEditMyPost";
 
 
 export default function ApplicationViews({ isLoggedIn }) {
@@ -31,6 +32,7 @@ export default function ApplicationViews({ isLoggedIn }) {
             <Route path="myPost/:id" element={<MyPostDetails />} />
             <Route path=":id/comments" element={<Comments />} />
             <Route path=":id/comments/add" element={<AddComment />} />
+            <Route path=":id/edit" element={<EditMyPost />} />
 
           </Route>
 

@@ -3,20 +3,21 @@ import { useState, useEffect } from "react"
 import { useNavigate, useParams } from "react-router-dom";
 import firebase from "firebase/app";
 import "firebase/auth";
-import { addComment, getPost } from "../modules/postManager";
+import { addComment, getPost, putPost } from "../modules/postManager";
 import { getAllCategories } from "../modules/categoryManager";
 
 
 
 export const EditMyPost = () => {
 
-    const firebaseId = firebase.auth().currentUser.uid
+
     const [userChoices, update] = useState({
+        id: 0,
         title: "",
         content: "",
-        imgUrl: "",
-        categoryId: "",
-        publicationDate: "",
+        imageLocation: "",
+        categoryId: 0,
+        publishDateTime: ""
 
     })
     const [post, setPosts] = useState();
@@ -29,7 +30,7 @@ export const EditMyPost = () => {
     /*--------------------------------------------------------------*/
     //useEffect Methods
     useEffect(() => {
-        getPost(id).then(setPosts);
+        getPost(id).then(update);
     }, []);
 
     useEffect(() => {
@@ -43,16 +44,18 @@ export const EditMyPost = () => {
     const handleSubmitButton = (event) => {
         event.preventDefault()
         const productToSendToAPI = {
+            id: userChoices.id,
             title: userChoices.title,
             content: userChoices.content,
+            imageLocation: userChoices.imageLocation,
+            publishDateTime: userChoices.publishDateTime,
             categoryId: userChoices.categoryId,
-            userProfileId: post.id
+
         }
         //sendign object to api by passing it in as an argument
-        return addComment(productToSendToAPI)
-
+        return putPost(userChoices.id, productToSendToAPI)
             .then(() => {
-                navigate(`/post/${parseInt(id.id)}/comments`)
+                navigate(`/post/myPost/${id}`)
             })
     }
 
@@ -104,16 +107,16 @@ export const EditMyPost = () => {
                     {categories.map((category) => {
                         return <div key={category.id} className="radio">
 
-                            <label className="label-img"> <img className="form-profile-img" src={category.category} alt="category"></img></label>
+                            <label className="label-category"> {category.name}</label>
                             <input
-                                name="category"
+                                name="number"
                                 type="radio"
-                                value={category.name}
-                                checked={userChoices.categoryId === category.name}
+                                value={category.id}
+                                checked={userChoices.categoryId === category.id}
                                 onChange={
                                     (evt) => {
                                         const copy = { ...userChoices }
-                                        copy.categoryId = (evt.target.value)
+                                        copy.categoryId = Number((evt.target.value))
                                         update(copy)
                                     }
                                 }
@@ -124,17 +127,17 @@ export const EditMyPost = () => {
             </fieldset>
             <fieldset>
                 <div className="form-group">
-                    <label htmlFor="imgUrl">Image Url:</label>
+                    <label htmlFor="imageLocation">Image Url:</label>
                     <input
 
                         type="string"
                         className="form-control"
-                        placeholder="imgUrl of video"
-                        value={userChoices.imgUrl}
+                        placeholder="imageLocation of video"
+                        value={userChoices.imageLocation}
                         onChange={
                             (evt) => {
                                 const copy = { ...userChoices }
-                                copy.imgUrl = (evt.target.value)
+                                copy.imageLocation = (evt.target.value)
                                 update(copy)
                             }
                         } />
@@ -142,17 +145,17 @@ export const EditMyPost = () => {
             </fieldset>
             <fieldset>
                 <div className="form-group">
-                    <label htmlFor="publicationDate">Publication Date:</label>
+                    <label htmlFor="publishDateTime">Publication Date:</label>
                     <input
 
                         type="date"
                         className="form-control"
-                        placeholder="publicationDate of video"
-                        value={userChoices.publicationDate}
+                        name="name"
+                        value={userChoices.publishDateTime}
                         onChange={
                             (evt) => {
                                 const copy = { ...userChoices }
-                                copy.publicationDate = Date((evt.target.value))
+                                copy.publishDateTime = (evt.target.value)
                                 update(copy)
                             }
                         } />

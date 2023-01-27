@@ -153,7 +153,7 @@ namespace Tabloid.Repositories
                               LEFT JOIN UserType ut ON u.UserTypeId = ut.id
                               LEFT JOIN Comment com ON com.PostId = p.Id
                        
-                              AND p.Id = @id";
+                              WHERE p.Id = @id";
 
                     cmd.Parameters.AddWithValue("@id", id);
                     var reader = cmd.ExecuteReader();
@@ -236,6 +236,7 @@ namespace Tabloid.Repositories
                                 Title = reader.GetString(reader.GetOrdinal("Title"))
                             },
                                 UserProfileId = DbUtils.GetInt(reader, "CommentUserProfileId"),
+                          
                             Content = DbUtils.GetString(reader, "CContent"),
                             Subject = DbUtils.GetString(reader, "Subject"),
                             CreateDateTime = DbUtils.GetDateTime(reader, "CDT"),
@@ -448,7 +449,7 @@ namespace Tabloid.Repositories
                         [Title] = @title,
                          [Content] = @content,
                          [ImageLocation] = @imagelocation,
-                         [CreateDateTime] = @createdatetime,
+                         
                          [PublishDateTime] = @publishdatetime,
                          [CategoryId] = @categoryid
                         WHERE Id = @id
@@ -457,9 +458,9 @@ namespace Tabloid.Repositories
                     cmd.Parameters.AddWithValue("@title", post.Title);
                     cmd.Parameters.AddWithValue("@content", post.Content);
                     cmd.Parameters.AddWithValue("@imagelocation", post.ImageLocation);
-                    cmd.Parameters.AddWithValue("@createdatetime", post.CreateDateTime);
+                  
                     cmd.Parameters.AddWithValue("@publishdatetime", post.PublishDateTime);
-                    cmd.Parameters.AddWithValue("@isapproved", post.IsApproved);
+                    
                     cmd.Parameters.AddWithValue("@categoryid", post.CategoryId);
                     cmd.ExecuteNonQuery();
                 }
@@ -518,7 +519,7 @@ namespace Tabloid.Repositories
                               LEFT JOIN UserProfile u ON p.UserProfileId = u.id
                               LEFT JOIN UserType ut ON u.UserTypeId = ut.id
                               LEFT JOIN PostTag pt ON pt.PostId = p.Id
-                        WHERE IsApproved = 1 AND PublishDateTime < SYSDATETIME() AND pt.TagId = @tagId";
+                        WHERE IsApproved = 0 AND PublishDateTime < SYSDATETIME() AND pt.TagId = @tagId";
 
                     cmd.Parameters.AddWithValue("@tagId", tagId);
                     var reader = cmd.ExecuteReader();

@@ -44,6 +44,32 @@ export const getPost = (id) => {
     });
 }
 
+export const putPost = (id, post) => {
+    return getToken().then((token) => {
+        return fetch(`${_postUrl}/${id}`, {
+            method: "PUT",
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(post)
+        })
+            .then((res) => {
+                if (res.ok) {
+                    return res.json();
+                } else if (res.status === 401) {
+                    throw new Error("Unauthorized");
+                } else {
+                    throw new Error(
+                        "An unknown error occurred while trying to put post.",
+                    );
+                }
+            });
+    });
+}
+
+
+
 export const getPostsFromUser = (firebaseId) => {
     return getToken().then((token) => {
         return fetch(`${_postUrl}/myPosts/${firebaseId}`, {
@@ -71,6 +97,7 @@ export const getCommentsOnPost = (id) => {
             method: "GET",
             headers: {
                 Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
             },
         })
             .then((res) => {

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Security.Claims;
 using Tabloid.Models;
 using Tabloid.Repositories;
 
@@ -11,10 +12,12 @@ namespace Tabloid.Controllers
     public class PostController : ControllerBase 
     {
         private readonly IPostRepository _postRepository;
+        private readonly IUserProfileRepository _profileRepository;
 
-        public PostController(IPostRepository postRepository)
+        public PostController(IPostRepository postRepository, IUserProfileRepository profileRepository)
         {
             _postRepository = postRepository;
+            _profileRepository = profileRepository;
         }
 
         [HttpGet]
@@ -74,7 +77,18 @@ namespace Tabloid.Controllers
         }
 
 
+        [HttpPut("{id}")]
+        public IActionResult Put(int id, Post post)
+        {
 
+            if (id != post.Id)
+            {
+                return BadRequest();
+            }
+           
+            _postRepository.UpdatePost(post);
+            return Ok(post);
+        }
 
 
 
