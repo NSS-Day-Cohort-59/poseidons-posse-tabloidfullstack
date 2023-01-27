@@ -6,9 +6,7 @@ import { addUserProfile } from "../modules/userProfileManager";
 
 export const UserProfileForm = () => {
   
-    const [profile, setProfile] = useState({
-      firebaseUserId: "HKKYeMTYpqfdwXpfSw2AUvxnvsC3"
-  });
+    const [profile, setProfile] = useState({});
 
     const handleInputChange = (evt) => {
         const value = evt.target.value;
@@ -23,17 +21,18 @@ export const UserProfileForm = () => {
       const navigate = useNavigate();
 
       const handleSave = (evt) => {
-        evt.preventDefault();
+          evt.preventDefault();
         const newProfile = {
           firstName: profile.firstName,
           lastName: profile.lastName,
           displayName: profile.displayName,
           email: profile.email,
+          firbaseUserId: ""
           };
     
     
         addUserProfile(newProfile).then(() => {
-          setProfile(profile);
+          
           navigate("/");
         });
       };
