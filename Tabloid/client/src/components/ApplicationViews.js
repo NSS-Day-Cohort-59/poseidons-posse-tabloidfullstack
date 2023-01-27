@@ -13,6 +13,7 @@ import PostDetails from "./PostDetails";
 import MyPosts from "./MyPosts";
 import Comments from "./CommentsOnPost";
 import { AddComment } from "./AddComment";
+import UserProfileForm from "./UserProfileForm";
 import MyPostDetails from "./MyPostDetails";
 import { EditMyPost } from "./FormEditMyPost";
 
@@ -37,7 +38,7 @@ export default function ApplicationViews({ isLoggedIn }) {
           </Route>
 
           <Route path="login" element={<Login />} />
-          <Route path="register" element={<Register />} />
+          <Route path="login/register" element={<UserProfileForm />} />
           <Route path="post/add" element={<PostForm />} />
           <Route path="Category" element={<CategoryList />} />
           <Route path="Category/add" element={<AddCategoryForm />} />
