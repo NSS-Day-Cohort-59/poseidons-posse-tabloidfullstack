@@ -7,11 +7,7 @@ import { addUserProfile } from "../modules/userProfileManager";
 export const UserProfileForm = () => {
   
     const [profile, setProfile] = useState({
-      firstName: "",
-      lastName: "",
-      displayName: "",
-      email: "",
-      firebaseUserId: "HGIYeMTYpqfdwXpfSw2AUvxnvsC3",
+      firebaseUserId: "HKKYeMTYpqfdwXpfSw2AUvxnvsC3"
   });
 
     const handleInputChange = (evt) => {
