@@ -54,11 +54,11 @@ export const addUserProfile = (newProfile) => {
       },
         body: JSON.stringify(newProfile),
     })
-     .then((resp) => {
+    .then((resp) => {
         if (resp.ok) {
           return resp.json();
         } else {
-          throw new Error("User profile already exists");
+          throw new Error("Error creating new profile");
         }
       });
     };

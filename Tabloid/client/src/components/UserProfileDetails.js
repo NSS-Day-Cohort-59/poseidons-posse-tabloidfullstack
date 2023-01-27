@@ -17,9 +17,9 @@ const UserProfileDetails = () => {
         getUserProfileDetails(id).then(setProfile);
       }, []);
       
-    //   if (!profile.imageLocation) {
-    //       profile.imageLocation = "https://robohash.org/numquamutut.png?size=150x150&set=set1";
-    //   }
+      if (!profile.imageLocation) {
+          profile.imageLocation = "https://robohash.org/numquamutut.png?size=150x150&set=set1";
+      }
  
       return (
         <Card> 
