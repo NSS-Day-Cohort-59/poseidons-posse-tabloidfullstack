@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using System;
 using Tabloid.Models;
 using Tabloid.Repositories;
@@ -8,13 +9,15 @@ namespace Tabloid.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PostController : ControllerBase 
+    public class PostController : ControllerBase
     {
         private readonly IPostRepository _postRepository;
+        private readonly IUserProfileRepository _userProfileRepository;
 
-        public PostController(IPostRepository postRepository)
+        public PostController(IPostRepository postRepository, IUserProfileRepository userProfileRepository)
         {
             _postRepository = postRepository;
+            _userProfileRepository = userProfileRepository;
         }
 
         [HttpGet]
@@ -53,7 +56,7 @@ namespace Tabloid.Controllers
 
 
             comment.CreateDateTime = DateTime.Now;
-           
+
 
             _postRepository.AddComment(comment);
 
@@ -61,6 +64,21 @@ namespace Tabloid.Controllers
         }
 
 
+
+        [HttpPost("add")]
+        public IActionResult Post(Post post)
+        {
+            var firebaseUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var user = _userProfileRepository.GetByFirebaseUserId(firebaseUserId);
+
+            post.IsApproved = true;
+            post.UserProfileId = user.Id;
+            post.CreateDateTime = DateTime.Now;
+
+            _postRepository.Add(post);
+
+            return CreatedAtAction("Get", new { id = post.Id }, post);
+        }
 
         [HttpGet("myPosts/{firebaseUserId}")]
         public IActionResult GetByFirebaseUserId(string firebaseUserId)
@@ -79,6 +97,10 @@ namespace Tabloid.Controllers
 
 
 
+        /* private UserProfile GetCurrentUserProfile()
+         {
+
+         }*/
 
 
 
