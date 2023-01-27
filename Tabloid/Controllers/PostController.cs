@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using System;
 using System.Security.Claims;
 using Tabloid.Models;
@@ -9,15 +10,24 @@ namespace Tabloid.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PostController : ControllerBase 
+    public class PostController : ControllerBase
     {
         private readonly IPostRepository _postRepository;
+<<<<<<< HEAD
         private readonly IUserProfileRepository _profileRepository;
 
         public PostController(IPostRepository postRepository, IUserProfileRepository profileRepository)
         {
             _postRepository = postRepository;
             _profileRepository = profileRepository;
+=======
+        private readonly IUserProfileRepository _userProfileRepository;
+
+        public PostController(IPostRepository postRepository, IUserProfileRepository userProfileRepository)
+        {
+            _postRepository = postRepository;
+            _userProfileRepository = userProfileRepository;
+>>>>>>> fe32a898932d8948d6c2633747209eed5f9c7635
         }
 
         [HttpGet]
@@ -56,7 +66,7 @@ namespace Tabloid.Controllers
 
 
             comment.CreateDateTime = DateTime.Now;
-           
+
 
             _postRepository.AddComment(comment);
 
@@ -64,6 +74,21 @@ namespace Tabloid.Controllers
         }
 
 
+
+        [HttpPost("add")]
+        public IActionResult Post(Post post)
+        {
+            var firebaseUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var user = _userProfileRepository.GetByFirebaseUserId(firebaseUserId);
+
+            post.IsApproved = true;
+            post.UserProfileId = user.Id;
+            post.CreateDateTime = DateTime.Now;
+
+            _postRepository.Add(post);
+
+            return CreatedAtAction("Get", new { id = post.Id }, post);
+        }
 
         [HttpGet("myPosts/{firebaseUserId}")]
         public IActionResult GetByFirebaseUserId(string firebaseUserId)
@@ -93,6 +118,10 @@ namespace Tabloid.Controllers
 
 
 
+        /* private UserProfile GetCurrentUserProfile()
+         {
+
+         }*/
 
 
 

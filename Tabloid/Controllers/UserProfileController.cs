@@ -45,9 +45,17 @@ namespace Tabloid.Controllers
         }
 
         [HttpGet("GetAllUsers")]
-        public IActionResult GetAllUsers() 
+        public IActionResult GetAllUsers()
         {
             return Ok(_userProfileRepository.GetAllUsers());
         }
+
+        [HttpGet("GetUserByIdWithUserType/{id}")]
+        public IActionResult GetUserByIdWithUserType(int id)
+        {
+            return Ok(_userProfileRepository.GetUserByIdWithUserType(id));
+        }
     }
 }
+
+
