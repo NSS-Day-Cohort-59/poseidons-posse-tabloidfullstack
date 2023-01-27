@@ -37,11 +37,11 @@ namespace Tabloid.Controllers
         {
             userProfile.CreateDateTime = DateTime.Now;
             userProfile.UserTypeId = UserType.AUTHOR_ID;
-            userProfile.FirebaseUserId = "HKKYeMTYpqfdwXpfSw2AUvxnvsC3";
+            userProfile.FirebaseUserId = "OtfJY7tkwnjerkingjrnkisnfklTBc2";
             _userProfileRepository.Add(userProfile);
             return CreatedAtAction(
                 nameof(GetUserProfile),
-                
+                new { id = userProfile.Id },
                 userProfile);
         }
 
