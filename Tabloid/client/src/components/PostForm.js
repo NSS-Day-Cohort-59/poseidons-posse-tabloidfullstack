@@ -3,31 +3,21 @@ import { useNavigate } from "react-router-dom";
 import { Button, Form, FormGroup, Label, Input } from "reactstrap";
 import { addPost } from "../modules/postManager";
 import { getAllCategories } from "../modules/categoryManager";
-import firebase from "firebase/app";
+
 import "firebase/auth";
 
 export default function PostForm() {
-  const firebaseId = firebase.auth().currentUser.uid;
   const navigate = useNavigate();
   const [categories, setCategories] = useState([]);
-  const [userProfile, setUserProfile] = useState({});
   const [userInput, setUserInput] = useState({
     title: "",
     content: "",
     categoryId: 0,
-    isApproved: 1,
-    userProfileId: firebaseId,
   });
 
   useEffect(() => {
     getAllCategories().then((category) => {
       setCategories(category);
-    });
-  }, []);
-
-  useEffect(() => {
-    getCurrentUserByFirebaseId.then((profile) => {
-      setCategories(profile);
     });
   }, []);
 
@@ -45,8 +35,10 @@ export default function PostForm() {
 
   const handleSavePost = (event) => {
     event.preventDefault();
-    addPost(userInput)
-      .then(() => navigate("/post"))
+    return addPost(userInput)
+      .then(() => {
+        navigate("/post");
+      })
       .catch((err) => alert(`An error ocurred: ${err.message}`));
   };
 

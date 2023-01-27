@@ -65,11 +65,15 @@ namespace Tabloid.Controllers
 
 
 
-        [HttpPost]
+        [HttpPost("add")]
         public IActionResult Post(Post post)
         {
             var firebaseUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            _userProfileRepository.GetByFirebaseUserId(firebaseUserId);
+            var user = _userProfileRepository.GetByFirebaseUserId(firebaseUserId);
+
+            post.IsApproved = true;
+            post.UserProfileId = user.Id;
+            post.CreateDateTime = DateTime.Now;
 
             _postRepository.Add(post);
 

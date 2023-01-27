@@ -7,17 +7,12 @@ import CategoryList from "./Categories/CategoryList";
 import { AddCategoryForm } from "./Categories/AddCategory";
 import PostList from "./PostList";
 import PostForm from "./PostForm";
-import MyPosts from "./MyPosts";
-
 import UserProfileList from "./UserProfileList";
 import UserProfileDetails from "./UserProfileDetails";
-<<<<<<< HEAD
 import PostDetails from "./PostDetails";
-=======
 import MyPosts from "./MyPosts";
 import Comments from "./CommentsOnPost";
 import { AddComment } from "./AddComment";
->>>>>>> main
 
 export default function ApplicationViews({ isLoggedIn }) {
   return (
@@ -34,7 +29,6 @@ export default function ApplicationViews({ isLoggedIn }) {
             <Route path="myPosts" element={<MyPosts />} />
             <Route path=":id/comments" element={<Comments />} />
             <Route path=":id/comments/add" element={<AddComment />} />
-
           </Route>
 
           <Route path="login" element={<Login />} />
